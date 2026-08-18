@@ -13,22 +13,22 @@
     color-scheme: light;
     --surface:#fcfcfb; --page:#f9f9f7; --ink:#0b0b0b; --ink2:#52514e;
     --muted:#898781; --grid:#e1e0d9; --border:rgba(11,11,11,0.10);
-    --accent:#2a78d6; --accent-ink:#ffffff;
-    --lvl0:#c3c2b7; --lvl0-fill:#eeede8;
+    --accent:#2a78d6; --accent-ink:#ffffff; --accent-fill:#e4eefb;
     --lvl1:#0ca30c; --lvl1-ink:#ffffff;
     --lvl2:#fab219; --lvl2-ink:#241a00;
     --lvl3:#d03b3b; --lvl3-ink:#ffffff;
+    --warn-fill:#fdecd2; --warn-ink:#7a4b00;
   }
   @media (prefers-color-scheme: dark){
     :root{
       color-scheme: dark;
       --surface:#1a1a19; --page:#0d0d0d; --ink:#ffffff; --ink2:#c3c2b7;
       --muted:#898781; --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
-      --accent:#3987e5; --accent-ink:#ffffff;
-      --lvl0:#383835; --lvl0-fill:#232322;
+      --accent:#3987e5; --accent-ink:#ffffff; --accent-fill:#122238;
       --lvl1:#0ca30c; --lvl1-ink:#ffffff;
       --lvl2:#fab219; --lvl2-ink:#241a00;
       --lvl3:#d03b3b; --lvl3-ink:#ffffff;
+      --warn-fill:#3a2c0d; --warn-ink:#f5c877;
     }
   }
   *{box-sizing:border-box;}
@@ -46,99 +46,96 @@
   main{padding:0 16px 24px;}
   .saved-toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(140%);
     background:var(--lvl1);color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:20px;
-    transition:transform .25s ease, opacity .25s ease;z-index:50;box-shadow:0 2px 10px rgba(0,0,0,.15);opacity:0;}
+    transition:transform .25s ease, opacity .25s ease;z-index:60;box-shadow:0 2px 10px rgba(0,0,0,.15);opacity:0;}
   .saved-toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
   .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;}
-  .legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--ink2);align-items:center;}
-  .legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle;}
+  .empty{color:var(--muted);font-size:13.5px;text-align:center;padding:40px 10px;line-height:1.5;}
 
-  .valsalva{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .valsalva p{font-size:14.5px;line-height:1.35;margin:0;flex:1;}
-  .seg{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;flex-shrink:0;}
-  .seg button{border:none;background:var(--surface);color:var(--ink2);font-size:13px;font-weight:600;
-    padding:9px 12px;cursor:pointer;}
-  .seg button.on{background:var(--accent);color:var(--accent-ink);}
-
-  .symptom-row{padding:12px 0;border-top:1px solid var(--grid);}
-  .symptom-row:first-child{border-top:none;}
-  .symptom-row .name{font-size:14.5px;font-weight:600;margin-bottom:8px;}
-  .lvl-row{display:flex;gap:8px;}
-  .lvl-btn{flex:1;height:44px;border-radius:10px;border:1.5px solid var(--grid);background:var(--surface);
-    display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--ink2);
-    cursor:pointer;}
-  .lvl-btn[data-lvl="0"]{color:var(--muted);}
-  .lvl-btn.sel[data-lvl="0"]{background:var(--lvl0-fill);border-color:var(--lvl0);color:var(--ink2);}
-  .lvl-btn.sel[data-lvl="1"]{background:var(--lvl1);border-color:var(--lvl1);color:var(--lvl1-ink);}
-  .lvl-btn.sel[data-lvl="2"]{background:var(--lvl2);border-color:var(--lvl2);color:var(--lvl2-ink);}
-  .lvl-btn.sel[data-lvl="3"]{background:var(--lvl3);border-color:var(--lvl3);color:var(--lvl3-ink);}
-  .sub-label{font-size:11.5px;color:var(--muted);margin-top:6px;height:14px;}
-  .outro-input{width:100%;margin-top:8px;padding:9px 10px;border-radius:8px;border:1px solid var(--grid);
-    background:var(--page);color:var(--ink);font-size:13.5px;}
-
-  textarea{width:100%;min-height:80px;border-radius:10px;border:1px solid var(--grid);background:var(--page);
-    color:var(--ink);font-size:14px;padding:10px;font-family:inherit;resize:vertical;}
-  label.field-label{font-size:13px;font-weight:600;color:var(--ink2);display:block;margin:0 0 6px;}
-
-  /* Histórico */
-  .day-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;
-    margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;}
-  .day-card .d-left{flex:1;min-width:0;}
-  .day-card .d-date{font-size:14.5px;font-weight:700;}
-  .day-card .d-sub{font-size:12px;color:var(--muted);margin-top:2px;}
-  .day-card .d-dots{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
-  .mini-dot{font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:20px;background:var(--lvl0-fill);color:var(--ink2);}
-  .mini-dot.l1{background:var(--lvl1);color:var(--lvl1-ink);}
-  .mini-dot.l2{background:var(--lvl2);color:var(--lvl2-ink);}
-  .mini-dot.l3{background:var(--lvl3);color:var(--lvl3-ink);}
-  .chev{color:var(--muted);font-size:20px;flex-shrink:0;}
-  .empty{color:var(--muted);font-size:13.5px;text-align:center;padding:40px 10px;}
-
-  .add-day-row{display:flex;gap:8px;margin-bottom:14px;}
-  .add-day-row input[type="date"]{flex:1;padding:10px;border-radius:10px;border:1px solid var(--grid);
-    background:var(--surface);color:var(--ink);font-size:14px;}
-  .btn{background:var(--accent);color:var(--accent-ink);border:none;border-radius:10px;padding:10px 16px;
-    font-size:14px;font-weight:700;cursor:pointer;}
+  .btn{background:var(--accent);color:var(--accent-ink);border:none;border-radius:12px;padding:12px 18px;
+    font-size:15px;font-weight:700;cursor:pointer;}
   .btn.secondary{background:var(--surface);color:var(--ink);border:1px solid var(--grid);}
   .btn.danger{background:var(--surface);color:var(--lvl3);border:1px solid var(--lvl3);}
   .btn.block{width:100%;}
+  .btn[disabled]{opacity:.4;}
+  .add-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--accent);color:var(--accent-ink);border:none;border-radius:14px;padding:16px;
+    font-size:16px;font-weight:800;cursor:pointer;margin-bottom:16px;box-shadow:0 2px 8px rgba(42,120,214,.25);}
+  .add-btn .plus{font-size:20px;line-height:1;}
+
+  /* Chip groups */
+  label.field-label{font-size:13px;font-weight:700;color:var(--ink2);display:block;margin:0 0 8px;}
+  .chip-group{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .chip{border:1.5px solid var(--grid);background:var(--surface);color:var(--ink2);border-radius:20px;
+    padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer;}
+  .chip.sel{background:var(--accent-fill);border-color:var(--accent);color:var(--accent);}
+  .chip.lvl1.sel{background:var(--lvl1);border-color:var(--lvl1);color:var(--lvl1-ink);}
+  .chip.lvl2.sel{background:var(--lvl2);border-color:var(--lvl2);color:var(--lvl2-ink);}
+  .chip.lvl3.sel{background:var(--lvl3);border-color:var(--lvl3);color:var(--lvl3-ink);}
+  .chip.wide{flex-basis:100%;}
+  .field{margin-bottom:16px;}
+  .row2{display:flex;gap:10px;}
+  .row2 > div{flex:1;}
+  input.text, input[type="date"], input[type="time"]{width:100%;padding:11px 12px;border-radius:10px;
+    border:1px solid var(--grid);background:var(--page);color:var(--ink);font-size:14.5px;}
+  textarea{width:100%;min-height:70px;border-radius:10px;border:1px solid var(--grid);background:var(--page);
+    color:var(--ink);font-size:14px;padding:10px;font-family:inherit;resize:vertical;}
+  .seg{display:flex;border:1px solid var(--grid);border-radius:10px;overflow:hidden;}
+  .seg button{flex:1;border:none;background:var(--surface);color:var(--ink2);font-size:13.5px;font-weight:600;
+    padding:10px 8px;cursor:pointer;border-right:1px solid var(--grid);}
+  .seg button:last-child{border-right:none;}
+  .seg button.on{background:var(--accent);color:var(--accent-ink);}
+  .required-star{color:var(--lvl3);}
+
+  /* Episode cards */
+  .day-group{margin-bottom:6px;}
+  .day-group-title{font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;
+    letter-spacing:.03em;margin:18px 2px 8px;}
+  .day-group-title:first-child{margin-top:0;}
+  .ep-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;
+    margin-bottom:10px;cursor:pointer;}
+  .ep-top{display:flex;align-items:center;gap:10px;}
+  .ep-time{font-size:12.5px;font-weight:700;color:var(--ink2);min-width:38px;}
+  .ep-symptom{font-size:14.5px;font-weight:700;flex:1;}
+  .ep-badge{font-size:12px;font-weight:800;border-radius:20px;padding:3px 10px;flex-shrink:0;}
+  .ep-badge.lvl1{background:var(--lvl1);color:var(--lvl1-ink);}
+  .ep-badge.lvl2{background:var(--lvl2);color:var(--lvl2-ink);}
+  .ep-badge.lvl3{background:var(--lvl3);color:var(--lvl3-ink);}
+  .ep-meta{font-size:12px;color:var(--muted);margin-top:6px;padding-left:48px;line-height:1.5;}
+  .ep-tag{display:inline-block;background:var(--warn-fill);color:var(--warn-ink);border-radius:8px;
+    padding:1px 7px;font-size:11px;font-weight:700;margin-right:5px;}
+  .ep-obs{font-size:12.5px;color:var(--ink2);margin-top:6px;padding-left:48px;font-style:italic;}
 
   /* Modal */
   .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;display:none;}
   .modal-backdrop.open{display:block;}
-  .modal{position:fixed;left:0;right:0;bottom:0;top:6%;background:var(--page);z-index:41;border-radius:18px 18px 0 0;
+  .modal{position:fixed;left:0;right:0;bottom:0;top:5%;background:var(--page);z-index:41;border-radius:18px 18px 0 0;
     display:none;flex-direction:column;overflow:hidden;}
   .modal.open{display:flex;}
-  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--grid);}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--grid);
+    background:var(--page);}
   .modal-head .m-title{font-size:15.5px;font-weight:700;}
   .modal-close{background:none;border:none;font-size:22px;color:var(--ink2);cursor:pointer;padding:4px 8px;}
-  .modal-body{overflow-y:auto;padding:14px 16px 24px;flex:1;}
+  .modal-body{overflow-y:auto;padding:16px 16px 100px;flex:1;}
+  .modal-footer{position:absolute;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:var(--page);border-top:1px solid var(--grid);display:flex;gap:10px;}
 
   /* Resumo / print */
-  .field{margin-bottom:14px;}
-  input.text{width:100%;padding:10px;border-radius:10px;border:1px solid var(--grid);background:var(--surface);
-    color:var(--ink);font-size:14px;}
-  .stat-row{display:flex;gap:10px;margin-bottom:14px;}
-  .stat{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;}
-  .stat .n{font-size:19px;font-weight:800;}
-  .stat .l{font-size:11px;color:var(--muted);margin-top:2px;}
-  table.matrix{border-collapse:collapse;width:100%;font-size:11px;}
-  table.matrix th,table.matrix td{border:1px solid var(--grid);padding:5px 4px;text-align:center;}
-  table.matrix th{background:var(--surface);color:var(--ink2);font-weight:600;font-size:10px;}
-  table.matrix td.sym-name{text-align:left;font-weight:600;font-size:11px;white-space:nowrap;background:var(--surface);}
-  table.matrix .cell0{color:var(--muted);}
-  table.matrix .cell1{background:var(--lvl1);color:var(--lvl1-ink);font-weight:700;}
-  table.matrix .cell2{background:var(--lvl2);color:var(--lvl2-ink);font-weight:700;}
-  table.matrix .cell3{background:var(--lvl3);color:var(--lvl3-ink);font-weight:700;}
+  .stat-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:70px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;}
+  .stat .n{font-size:18px;font-weight:800;}
+  .stat .l{font-size:10.5px;color:var(--muted);margin-top:2px;}
+  table.matrix{border-collapse:collapse;width:100%;font-size:11.5px;}
+  table.matrix th,table.matrix td{border:1px solid var(--grid);padding:6px 7px;text-align:left;vertical-align:top;}
+  table.matrix th{background:var(--surface);color:var(--ink2);font-weight:700;font-size:10.5px;white-space:nowrap;}
+  table.matrix td{white-space:nowrap;}
+  table.matrix td.wrap{white-space:normal;min-width:110px;}
+  table.matrix .lvl1{color:var(--lvl1);font-weight:800;}
+  table.matrix .lvl2{color:#a56900;font-weight:800;}
+  table.matrix .lvl3{color:var(--lvl3);font-weight:800;}
   .matrix-wrap{overflow-x:auto;margin-bottom:16px;-webkit-overflow-scrolling:touch;}
-  .obs-item{padding:9px 0;border-top:1px solid var(--grid);font-size:13px;}
-  .obs-item:first-child{border-top:none;}
-  .obs-item .o-date{font-weight:700;font-size:12.5px;}
-  .obs-item .o-flag{display:inline-block;margin-left:6px;font-size:10.5px;background:var(--lvl2);color:var(--lvl2-ink);
-    padding:1px 6px;border-radius:8px;font-weight:700;}
   .section-title{font-size:13.5px;font-weight:700;margin:18px 0 8px;color:var(--ink2);text-transform:uppercase;letter-spacing:.02em;}
 
-  /* Bottom nav */
   nav.bottomnav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--border);
     display:flex;padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:10;max-width:560px;margin:0 auto;}
   nav.bottomnav button{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;
@@ -147,11 +144,20 @@
   nav.bottomnav button.active{color:var(--accent);}
 
   @media print{
+    @page{ size: landscape; margin: 10mm; }
+    #app{max-width:none;}
     body{padding-bottom:0;background:#fff;color:#000;}
     header.top,nav.bottomnav,#view-hoje,#view-historico,.no-print,.saved-toast{display:none !important;}
     #view-resumo{display:block !important;padding:0;}
     .card{border:none;padding:0;}
-    table.matrix .cell1,table.matrix .cell2,table.matrix .cell3{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .stat-row{page-break-inside:avoid;}
+    .matrix-wrap{overflow:visible !important;}
+    table.matrix{font-size:9px;width:100%;table-layout:auto;}
+    table.matrix thead{display:table-header-group;}
+    table.matrix tr{page-break-inside:avoid;break-inside:avoid;}
+    table.matrix th,table.matrix td{white-space:normal !important;word-break:break-word;padding:4px 5px;}
+    table.matrix td.wrap{min-width:0;}
+    table.matrix .lvl1,table.matrix .lvl2,table.matrix .lvl3{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
 </style>
 </head>
@@ -178,7 +184,7 @@
 <div class="modal-backdrop no-print" id="modal-backdrop"></div>
 <div class="modal no-print" id="modal">
   <div class="modal-head">
-    <div class="m-title" id="modal-title">Dia</div>
+    <div class="m-title" id="modal-title">Registrar sintoma</div>
     <button class="modal-close" id="modal-close">✕</button>
   </div>
   <div class="modal-body" id="modal-body"></div>
@@ -201,274 +207,407 @@
     {id:'voz',          label:'Alteração da voz / rouquidão'},
     {id:'sono',         label:'Alteração do sono'},
     {id:'urinario',     label:'Alt. urinárias / intestinais'},
-    {id:'outro',        label:'Outro sintoma'}
+    {id:'outro',        label:'Outro'}
   ];
-  var LEVELS = [
-    {v:0,label:'Não ocorreu'},
-    {v:1,label:'Leve'},
-    {v:2,label:'Moderado'},
-    {v:3,label:'Forte'}
+  var INTENSITIES = [
+    {v:1,label:'Leve',cls:'lvl1'},
+    {v:2,label:'Moderado',cls:'lvl2'},
+    {v:3,label:'Forte',cls:'lvl3'}
   ];
-  var STORAGE_KEY = 'chiari_sintomas_v1';
+  var DURATIONS = ['< 15 min','15–30 min','30 min – 1h','1h – 3h','Mais de 3h','Ainda sentindo'];
+  var ACTIVITIES = ['Em repouso','Andando','Ao abaixar/curvar','Tossindo/espirrando/esforço','Dirigindo','Trabalhando','Dormindo/ao acordar','Outro'];
+
+  var STORAGE_KEY = 'chiari_episodios_v1';
   var WEEKDAYS = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-  var WEEKDAYS_SHORT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  var MONTHS_SHORT = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  var MONTHS_FULL = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 
   function loadData(){
     try{
       var raw = localStorage.getItem(STORAGE_KEY);
       if(raw) return JSON.parse(raw);
     }catch(e){}
-    return {patientName:'', entries:{}};
+    return {patientName:'', episodes:[]};
   }
   function saveData(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA));
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA)); }catch(e){}
   }
   var DATA = loadData();
 
-  function todayKey(){
+  function pad(n){ return n<10 ? '0'+n : ''+n; }
+  function nowDateStr(){
     var d = new Date();
     return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
   }
-  function pad(n){ return n<10 ? '0'+n : ''+n; }
-  function parseKey(key){
+  function nowTimeStr(){
+    var d = new Date();
+    return pad(d.getHours())+':'+pad(d.getMinutes());
+  }
+  function parseDateStr(key){
     var p = key.split('-');
     return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
   }
   function longDateLabel(key){
-    var d = parseKey(key);
-    return WEEKDAYS[d.getDay()]+', '+pad(d.getDate())+' de '+ ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][d.getMonth()];
+    var d = parseDateStr(key);
+    return WEEKDAYS[d.getDay()]+', '+pad(d.getDate())+' de '+MONTHS_FULL[d.getMonth()];
   }
   function shortDateLabel(key){
-    var d = parseKey(key);
-    return WEEKDAYS_SHORT[d.getDay()]+' '+pad(d.getDate())+'/'+pad(d.getMonth()+1);
-  }
-  function matrixDateLabel(key){
-    var d = parseKey(key);
+    var d = parseDateStr(key);
     return pad(d.getDate())+'/'+pad(d.getMonth()+1);
   }
-
-  function getEntry(key){
-    if(!DATA.entries[key]){
-      DATA.entries[key] = {vals:{}, outro_desc:'', valsalva:null, obs:''};
-    }
-    return DATA.entries[key];
+  function symptomLabel(ep){
+    var s = SYMPTOMS.filter(function(s){return s.id===ep.symptomId;})[0];
+    if(!s) return '—';
+    if(s.id==='outro' && ep.symptomOther) return ep.symptomOther;
+    return s.label;
   }
-
-  var toastTimer = null;
-  function showToast(){
-    var t = document.getElementById('toast');
-    t.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1100);
-  }
-
-  // ---------- Day form (reused for "Hoje" and for editing in modal) ----------
-  function renderDayForm(key, container, onSave){
-    var entry = getEntry(key);
-    var html = '';
-    html += '<div class="card">';
-    html += '<div class="legend"><span><span class="dot" style="background:var(--lvl0-fill);border:1px solid var(--lvl0)"></span>0 não ocorreu</span>';
-    html += '<span><span class="dot" style="background:var(--lvl1)"></span>1 leve</span>';
-    html += '<span><span class="dot" style="background:var(--lvl2)"></span>2 moderado</span>';
-    html += '<span><span class="dot" style="background:var(--lvl3)"></span>3 forte</span></div>';
-    html += '</div>';
-
-    html += '<div class="card valsalva">';
-    html += '<p>Hoje piorou tossindo, espirrando, se abaixando ou fazendo esforço?</p>';
-    html += '<div class="seg" data-field="valsalva">';
-    html += '<button data-val="sim" class="'+(entry.valsalva===true?'on':'')+'">Sim</button>';
-    html += '<button data-val="nao" class="'+(entry.valsalva===false?'on':'')+'">Não</button>';
-    html += '</div></div>';
-
-    html += '<div class="card">';
-    SYMPTOMS.forEach(function(s){
-      var v = entry.vals[s.id];
-      var vLabel = (v===undefined) ? '' : LEVELS[v].label;
-      html += '<div class="symptom-row" data-symptom="'+s.id+'">';
-      html += '<div class="name">'+s.label+'</div>';
-      html += '<div class="lvl-row">';
-      LEVELS.forEach(function(l){
-        html += '<button class="lvl-btn '+(v===l.v?'sel':'')+'" data-lvl="'+l.v+'">'+l.v+'</button>';
-      });
-      html += '</div>';
-      html += '<div class="sub-label">'+vLabel+'</div>';
-      if(s.id==='outro'){
-        html += '<input type="text" class="outro-input" placeholder="Qual sintoma?" value="'+escapeHtml(entry.outro_desc||'')+'" '+(v ? '' : 'style="display:none"')+' data-outro-desc>';
-      }
-      html += '</div>';
-    });
-    html += '</div>';
-
-    html += '<div class="card">';
-    html += '<label class="field-label">Observações do dia (opcional)</label>';
-    html += '<textarea placeholder="Ex: dor forte de manhã, melhorou após remédio, episódio ao se abaixar..." data-field="obs">'+escapeHtml(entry.obs||'')+'</textarea>';
-    html += '</div>';
-
-    container.innerHTML = html;
-
-    // wire events
-    container.querySelectorAll('.seg[data-field="valsalva"] button').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        entry.valsalva = (btn.getAttribute('data-val')==='sim');
-        saveData(); showToast();
-        renderDayForm(key, container, onSave);
-        if(onSave) onSave();
-      });
-    });
-    container.querySelectorAll('.symptom-row').forEach(function(row){
-      var symId = row.getAttribute('data-symptom');
-      row.querySelectorAll('.lvl-btn').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          var lvl = parseInt(btn.getAttribute('data-lvl'),10);
-          entry.vals[symId] = lvl;
-          saveData(); showToast();
-          renderDayForm(key, container, onSave);
-          if(onSave) onSave();
-        });
-      });
-      var outroInput = row.querySelector('[data-outro-desc]');
-      if(outroInput){
-        outroInput.addEventListener('input', function(){
-          entry.outro_desc = outroInput.value;
-          saveData();
-        });
-        outroInput.addEventListener('blur', function(){ if(onSave) onSave(); });
-      }
-    });
-    var obsField = container.querySelector('[data-field="obs"]');
-    var obsTimer;
-    obsField.addEventListener('input', function(){
-      entry.obs = obsField.value;
-      clearTimeout(obsTimer);
-      obsTimer = setTimeout(function(){ saveData(); showToast(); if(onSave) onSave(); }, 500);
-    });
-  }
-
   function escapeHtml(str){
     return (str||'').replace(/[&<>"']/g, function(c){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
   }
-
-  // ---------- Views ----------
-  function renderHoje(){
-    var el = document.getElementById('view-hoje');
-    var key = todayKey();
-    el.innerHTML = '<div class="hint">Toque no número que representa a intensidade de cada sintoma hoje. Tudo fica salvo automaticamente no aparelho.</div><div id="hoje-form"></div>';
-    renderDayForm(key, document.getElementById('hoje-form'));
+  function uid(){
+    return 'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
   }
 
-  function renderHistorico(){
-    var el = document.getElementById('view-historico');
-    var keys = Object.keys(DATA.entries).sort().reverse();
-    var html = '<div class="hint">Toque em um dia para revisar ou editar. Esqueceu de marcar um dia? Escolha a data abaixo.</div>';
-    html += '<div class="add-day-row"><input type="date" id="pick-date" max="'+todayKey()+'"><button class="btn" id="pick-date-go">Abrir</button></div>';
-    if(keys.length===0){
-      html += '<div class="empty">Nenhum dia registrado ainda.<br>Comece pela aba "Hoje".</div>';
-    } else {
-      keys.forEach(function(key){
-        var entry = DATA.entries[key];
-        var dots = '';
-        SYMPTOMS.forEach(function(s){
-          var v = entry.vals[s.id];
-          if(v && v>0){
-            dots += '<span class="mini-dot l'+v+'">'+s.label+' '+v+'</span>';
-          }
-        });
-        var sub = (entry.valsalva===true) ? 'Piorou com tosse/esforço' : '';
-        html += '<div class="day-card" data-key="'+key+'">';
-        html += '<div class="d-left"><div class="d-date">'+shortDateLabel(key)+'</div>';
-        if(sub) html += '<div class="d-sub">⚠️ '+sub+'</div>';
-        html += '<div class="d-dots">'+(dots || '<span class="d-sub">Sem sintomas marcados</span>')+'</div></div>';
-        html += '<div class="chev">›</div></div>';
-      });
-    }
-    el.innerHTML = html;
+  var toastTimer = null;
+  function showToast(msg){
+    var t = document.getElementById('toast');
+    t.textContent = msg || 'Salvo ✓';
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1300);
+  }
 
-    document.getElementById('pick-date-go').addEventListener('click', function(){
-      var v = document.getElementById('pick-date').value;
-      if(v) openDayModal(v);
-    });
-    el.querySelectorAll('.day-card').forEach(function(card){
-      card.addEventListener('click', function(){
-        openDayModal(card.getAttribute('data-key'));
-      });
+  function sortedEpisodes(){
+    return DATA.episodes.slice().sort(function(a,b){
+      var ka = a.date+' '+a.time, kb = b.date+' '+b.time;
+      return ka<kb ? -1 : ka>kb ? 1 : 0;
     });
   }
 
-  function openDayModal(key){
-    document.getElementById('modal-title').textContent = longDateLabel(key);
-    var body = document.getElementById('modal-body');
-    renderDayForm(key, body, function(){ renderHistorico(); renderResumo(); });
+  // ---------- Episode form (modal, used for both add & edit) ----------
+  var draft = null; // working copy while modal open
+  var editingId = null;
+
+  function openEpisodeForm(existing){
+    editingId = existing ? existing.id : null;
+    draft = existing ? JSON.parse(JSON.stringify(existing)) : {
+      id: uid(), date: nowDateStr(), time: nowTimeStr(),
+      symptomId: null, symptomOther:'', intensity: null,
+      duration:'', activity:'', activityOther:'',
+      valsalva:null, medication:null, medicationText:'', relief:null,
+      obs:''
+    };
+    document.getElementById('modal-title').textContent = existing ? 'Editar registro' : 'Registrar sintoma';
+    renderEpisodeForm();
     document.getElementById('modal').classList.add('open');
     document.getElementById('modal-backdrop').classList.add('open');
   }
   function closeModal(){
     document.getElementById('modal').classList.remove('open');
     document.getElementById('modal-backdrop').classList.remove('open');
-    renderHistorico();
-    renderResumo();
+    draft = null; editingId = null;
+    renderAll();
+  }
+
+  function renderEpisodeForm(){
+    var body = document.getElementById('modal-body');
+    var html = '';
+
+    html += '<div class="field"><label class="field-label">Sintoma <span class="required-star">*</span></label>';
+    html += '<div class="chip-group" data-group="symptom">';
+    SYMPTOMS.forEach(function(s){
+      html += '<button type="button" class="chip '+(draft.symptomId===s.id?'sel':'')+'" data-val="'+s.id+'">'+s.label+'</button>';
+    });
+    html += '</div>';
+    if(draft.symptomId==='outro'){
+      html += '<input type="text" class="text" id="f-symptom-other" placeholder="Qual sintoma?" value="'+escapeHtml(draft.symptomOther)+'" style="margin-top:-6px;margin-bottom:14px;">';
+    }
+    html += '</div>';
+
+    html += '<div class="field"><label class="field-label">Intensidade <span class="required-star">*</span></label>';
+    html += '<div class="chip-group" data-group="intensity">';
+    INTENSITIES.forEach(function(l){
+      html += '<button type="button" class="chip '+l.cls+' '+(draft.intensity===l.v?'sel':'')+'" data-val="'+l.v+'">'+l.label+'</button>';
+    });
+    html += '</div></div>';
+
+    html += '<div class="row2 field">';
+    html += '<div><label class="field-label">Dia</label><input type="date" id="f-date" value="'+draft.date+'" max="'+nowDateStr()+'"></div>';
+    html += '<div><label class="field-label">Horário</label><input type="time" id="f-time" value="'+draft.time+'"></div>';
+    html += '</div>';
+
+    html += '<div class="field"><label class="field-label">Duração</label>';
+    html += '<div class="chip-group" data-group="duration">';
+    DURATIONS.forEach(function(d){
+      html += '<button type="button" class="chip '+(draft.duration===d?'sel':'')+'" data-val="'+escapeHtml(d)+'">'+d+'</button>';
+    });
+    html += '</div></div>';
+
+    html += '<div class="field"><label class="field-label">O que estava fazendo?</label>';
+    html += '<div class="chip-group" data-group="activity">';
+    ACTIVITIES.forEach(function(a){
+      html += '<button type="button" class="chip '+(draft.activity===a?'sel':'')+'" data-val="'+escapeHtml(a)+'">'+a+'</button>';
+    });
+    html += '</div>';
+    if(draft.activity==='Outro'){
+      html += '<input type="text" class="text" id="f-activity-other" placeholder="Descreva" value="'+escapeHtml(draft.activityOther)+'" style="margin-top:8px;">';
+    }
+    html += '</div>';
+
+    html += '<div class="field"><label class="field-label">Piorou com tosse, espirro ou esforço?</label>';
+    html += '<div class="seg" data-group="valsalva">';
+    html += '<button type="button" data-val="sim" class="'+(draft.valsalva==='sim'?'on':'')+'">Sim</button>';
+    html += '<button type="button" data-val="nao" class="'+(draft.valsalva==='nao'?'on':'')+'">Não</button>';
+    html += '<button type="button" data-val="nao_sei" class="'+(draft.valsalva==='nao_sei'?'on':'')+'">Não sei</button>';
+    html += '</div></div>';
+
+    html += '<div class="field"><label class="field-label">Tomou algum medicamento?</label>';
+    html += '<div class="seg" data-group="medication">';
+    html += '<button type="button" data-val="sim" class="'+(draft.medication==='sim'?'on':'')+'">Sim</button>';
+    html += '<button type="button" data-val="nao" class="'+(draft.medication==='nao'?'on':'')+'">Não</button>';
+    html += '</div>';
+    if(draft.medication==='sim'){
+      html += '<input type="text" class="text" id="f-medication-text" placeholder="Qual remédio?" value="'+escapeHtml(draft.medicationText)+'" style="margin-top:8px;">';
+      html += '<div style="margin-top:8px;"><label class="field-label" style="font-weight:600;font-size:12.5px;">Aliviou?</label>';
+      html += '<div class="seg" data-group="relief">';
+      html += '<button type="button" data-val="sim" class="'+(draft.relief==='sim'?'on':'')+'">Sim</button>';
+      html += '<button type="button" data-val="nao" class="'+(draft.relief==='nao'?'on':'')+'">Não</button>';
+      html += '<button type="button" data-val="ainda_nao" class="'+(draft.relief==='ainda_nao'?'on':'')+'">Ainda não</button>';
+      html += '</div></div>';
+    }
+    html += '</div>';
+
+    html += '<div class="field"><label class="field-label">Observações</label>';
+    html += '<textarea id="f-obs" placeholder="Algo mais a registrar...">'+escapeHtml(draft.obs)+'</textarea></div>';
+
+    html += '<div style="height:6px"></div>';
+
+    html += '<div class="modal-footer">';
+    if(editingId){
+      html += '<button type="button" class="btn danger" id="f-delete">Excluir</button>';
+    }
+    html += '<button type="button" class="btn block" id="f-save" '+((!draft.symptomId||!draft.intensity)?'disabled':'')+'>Salvar registro</button>';
+    html += '</div>';
+
+    body.innerHTML = html;
+    body.style.paddingBottom = editingId ? '150px' : '120px';
+    wireEpisodeForm();
+  }
+
+  function wireEpisodeForm(){
+    var body = document.getElementById('modal-body');
+
+    body.querySelectorAll('[data-group="symptom"] .chip').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        draft.symptomId = btn.getAttribute('data-val');
+        renderEpisodeForm();
+      });
+    });
+    body.querySelectorAll('[data-group="intensity"] .chip').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        draft.intensity = parseInt(btn.getAttribute('data-val'),10);
+        renderEpisodeForm();
+      });
+    });
+    body.querySelectorAll('[data-group="duration"] .chip').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var v = btn.getAttribute('data-val');
+        draft.duration = (draft.duration===v) ? '' : v;
+        renderEpisodeForm();
+      });
+    });
+    body.querySelectorAll('[data-group="activity"] .chip').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var v = btn.getAttribute('data-val');
+        draft.activity = (draft.activity===v) ? '' : v;
+        renderEpisodeForm();
+      });
+    });
+    body.querySelectorAll('[data-group="valsalva"] button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var v = btn.getAttribute('data-val');
+        draft.valsalva = (draft.valsalva===v) ? null : v;
+        renderEpisodeForm();
+      });
+    });
+    body.querySelectorAll('[data-group="medication"] button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var v = btn.getAttribute('data-val');
+        draft.medication = (draft.medication===v) ? null : v;
+        if(draft.medication!=='sim'){ draft.relief=null; draft.medicationText=''; }
+        renderEpisodeForm();
+      });
+    });
+    var reliefGroup = body.querySelector('[data-group="relief"]');
+    if(reliefGroup){
+      reliefGroup.querySelectorAll('button').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var v = btn.getAttribute('data-val');
+          draft.relief = (draft.relief===v) ? null : v;
+          renderEpisodeForm();
+        });
+      });
+    }
+    var fDate = document.getElementById('f-date');
+    if(fDate) fDate.addEventListener('change', function(){ draft.date = fDate.value || nowDateStr(); });
+    var fTime = document.getElementById('f-time');
+    if(fTime) fTime.addEventListener('change', function(){ draft.time = fTime.value || nowTimeStr(); });
+    var fSymOther = document.getElementById('f-symptom-other');
+    if(fSymOther) fSymOther.addEventListener('input', function(){ draft.symptomOther = fSymOther.value; });
+    var fActOther = document.getElementById('f-activity-other');
+    if(fActOther) fActOther.addEventListener('input', function(){ draft.activityOther = fActOther.value; });
+    var fMedText = document.getElementById('f-medication-text');
+    if(fMedText) fMedText.addEventListener('input', function(){ draft.medicationText = fMedText.value; });
+    var fObs = document.getElementById('f-obs');
+    if(fObs) fObs.addEventListener('input', function(){ draft.obs = fObs.value; });
+
+    var saveBtn = document.getElementById('f-save');
+    if(saveBtn) saveBtn.addEventListener('click', function(){
+      if(!draft.symptomId || !draft.intensity) return;
+      var idx = DATA.episodes.findIndex(function(e){return e.id===draft.id;});
+      if(idx>=0) DATA.episodes[idx] = draft; else DATA.episodes.push(draft);
+      saveData();
+      closeModal();
+      showToast('Registro salvo ✓');
+    });
+    var delBtn = document.getElementById('f-delete');
+    if(delBtn) delBtn.addEventListener('click', function(){
+      if(confirm('Excluir este registro?')){
+        DATA.episodes = DATA.episodes.filter(function(e){return e.id!==editingId;});
+        saveData();
+        closeModal();
+        showToast('Registro excluído');
+      }
+    });
+  }
+
+  // ---------- Episode card renderer ----------
+  function episodeCardHtml(ep){
+    var intClass = 'lvl'+ep.intensity;
+    var intLabel = INTENSITIES.filter(function(l){return l.v===ep.intensity;})[0];
+    var metaParts = [];
+    if(ep.duration) metaParts.push(ep.duration);
+    if(ep.activity) metaParts.push(ep.activity==='Outro' ? (ep.activityOther||'Outro') : ep.activity);
+    var html = '<div class="ep-card" data-id="'+ep.id+'">';
+    html += '<div class="ep-top"><span class="ep-time">'+ep.time+'</span><span class="ep-symptom">'+escapeHtml(symptomLabel(ep))+'</span>';
+    html += '<span class="ep-badge '+intClass+'">'+(intLabel?intLabel.label:ep.intensity)+'</span></div>';
+    if(metaParts.length || ep.valsalva==='sim' || ep.medication==='sim'){
+      html += '<div class="ep-meta">';
+      if(ep.valsalva==='sim') html += '<span class="ep-tag">⚠️ piora c/ esforço</span>';
+      if(ep.medication==='sim') html += '<span class="ep-tag">💊 medicamento</span>';
+      html += escapeHtml(metaParts.join(' · '));
+      html += '</div>';
+    }
+    if(ep.obs) html += '<div class="ep-obs">"'+escapeHtml(ep.obs)+'"</div>';
+    html += '</div>';
+    return html;
+  }
+
+  // ---------- Views ----------
+  function renderHoje(){
+    var el = document.getElementById('view-hoje');
+    var today = nowDateStr();
+    var todays = sortedEpisodes().filter(function(e){return e.date===today;}).reverse();
+    var html = '<button class="add-btn no-print" id="add-btn-hoje"><span class="plus">+</span> Registrar sintoma agora</button>';
+    if(todays.length===0){
+      html += '<div class="empty">Nenhum sintoma registrado hoje ainda.<br>Toque no botão acima assim que sentir algo.</div>';
+    } else {
+      todays.forEach(function(ep){ html += episodeCardHtml(ep); });
+    }
+    el.innerHTML = html;
+    document.getElementById('add-btn-hoje').addEventListener('click', function(){ openEpisodeForm(null); });
+    el.querySelectorAll('.ep-card').forEach(function(card){
+      card.addEventListener('click', function(){
+        var ep = DATA.episodes.filter(function(e){return e.id===card.getAttribute('data-id');})[0];
+        if(ep) openEpisodeForm(ep);
+      });
+    });
+  }
+
+  function renderHistorico(){
+    var el = document.getElementById('view-historico');
+    var eps = sortedEpisodes().reverse();
+    var html = '<div class="hint">Toque em qualquer registro pra revisar, corrigir ou excluir.</div>';
+    if(eps.length===0){
+      html += '<div class="empty">Nenhum registro ainda.<br>Comece pela aba "Hoje".</div>';
+    } else {
+      var byDate = {};
+      var order = [];
+      eps.forEach(function(ep){
+        if(!byDate[ep.date]){ byDate[ep.date]=[]; order.push(ep.date); }
+        byDate[ep.date].push(ep);
+      });
+      order.forEach(function(dateKey){
+        html += '<div class="day-group-title">'+longDateLabel(dateKey)+'</div>';
+        byDate[dateKey].forEach(function(ep){ html += episodeCardHtml(ep); });
+      });
+    }
+    el.innerHTML = html;
+    el.querySelectorAll('.ep-card').forEach(function(card){
+      card.addEventListener('click', function(){
+        var ep = DATA.episodes.filter(function(e){return e.id===card.getAttribute('data-id');})[0];
+        if(ep) openEpisodeForm(ep);
+      });
+    });
   }
 
   function renderResumo(){
     var el = document.getElementById('view-resumo');
-    var keys = Object.keys(DATA.entries).sort();
+    var eps = sortedEpisodes();
     var html = '';
     html += '<div class="field no-print"><label class="field-label">Nome do paciente</label>';
     html += '<input type="text" class="text" id="patient-name" value="'+escapeHtml(DATA.patientName||'')+'" placeholder="Ex: José da Silva"></div>';
 
+    var dates = {};
+    eps.forEach(function(e){ dates[e.date]=true; });
+    var dateKeys = Object.keys(dates).sort();
+    var valsalvaCount = eps.filter(function(e){return e.valsalva==='sim';}).length;
+
     html += '<div class="stat-row">';
-    html += '<div class="stat"><div class="n">'+keys.length+'</div><div class="l">dias registrados</div></div>';
-    var period = keys.length ? (matrixDateLabel(keys[0])+' – '+matrixDateLabel(keys[keys.length-1])) : '–';
-    html += '<div class="stat"><div class="n" style="font-size:14px">'+period+'</div><div class="l">período</div></div>';
-    var valsalvaCount = keys.filter(function(k){return DATA.entries[k].valsalva===true;}).length;
-    html += '<div class="stat"><div class="n">'+valsalvaCount+'</div><div class="l">dias c/ piora ao esforço</div></div>';
+    html += '<div class="stat"><div class="n">'+eps.length+'</div><div class="l">registros</div></div>';
+    html += '<div class="stat"><div class="n">'+dateKeys.length+'</div><div class="l">dias com registro</div></div>';
+    html += '<div class="stat"><div class="n">'+valsalvaCount+'</div><div class="l">c/ piora ao esforço</div></div>';
     html += '</div>';
 
     if(DATA.patientName){
-      html += '<div style="font-size:13px;color:var(--ink2);margin-bottom:10px;">Paciente: <b>'+escapeHtml(DATA.patientName)+'</b> · Relatório gerado em '+matrixDateLabel(todayKey())+'</div>';
+      var period = dateKeys.length ? (shortDateLabel(dateKeys[0])+' – '+shortDateLabel(dateKeys[dateKeys.length-1])) : '–';
+      html += '<div style="font-size:13px;color:var(--ink2);margin-bottom:10px;">Paciente: <b>'+escapeHtml(DATA.patientName)+'</b> · Período: '+period+' · Relatório gerado em '+shortDateLabel(nowDateStr())+'</div>';
     }
 
-    html += '<div class="section-title">Tabela de sintomas por dia</div>';
-    if(keys.length===0){
-      html += '<div class="empty">Ainda não há dados suficientes para o resumo.</div>';
+    html += '<div class="section-title">Registro detalhado de sintomas</div>';
+    if(eps.length===0){
+      html += '<div class="empty">Ainda não há registros suficientes para o resumo.</div>';
     } else {
-      html += '<div class="matrix-wrap"><table class="matrix"><thead><tr><th style="text-align:left">Sintoma</th>';
-      keys.forEach(function(k){ html += '<th>'+matrixDateLabel(k)+'</th>'; });
+      html += '<div class="matrix-wrap"><table class="matrix"><thead><tr>';
+      ['Dia','Horário','Sintoma','Duração','Intensidade','O que estava fazendo','Piorou c/ tosse/esforço','Medicamento','Observações'].forEach(function(h){
+        html += '<th>'+h+'</th>';
+      });
       html += '</tr></thead><tbody>';
-      SYMPTOMS.forEach(function(s){
-        html += '<tr><td class="sym-name">'+s.label+'</td>';
-        keys.forEach(function(k){
-          var v = DATA.entries[k].vals[s.id];
-          v = (v===undefined) ? 0 : v;
-          html += '<td class="cell'+v+'">'+v+'</td>';
-        });
+      eps.forEach(function(ep){
+        var intLabel = INTENSITIES.filter(function(l){return l.v===ep.intensity;})[0];
+        var activityTxt = ep.activity==='Outro' ? (ep.activityOther||'Outro') : (ep.activity||'—');
+        var valsalvaTxt = ep.valsalva==='sim' ? 'Sim' : ep.valsalva==='nao' ? 'Não' : ep.valsalva==='nao_sei' ? 'Não sei' : '—';
+        var medTxt = ep.medication==='sim' ? (escapeHtml(ep.medicationText||'Sim') + (ep.relief ? (' ('+(ep.relief==='sim'?'aliviou':ep.relief==='nao'?'não aliviou':'ainda não')+')') : '')) : (ep.medication==='nao' ? 'Não' : '—');
+        html += '<tr>';
+        html += '<td>'+shortDateLabel(ep.date)+'</td>';
+        html += '<td>'+ep.time+'</td>';
+        html += '<td class="wrap">'+escapeHtml(symptomLabel(ep))+'</td>';
+        html += '<td>'+(ep.duration||'—')+'</td>';
+        html += '<td class="'+(intLabel?intLabel.cls:'')+'">'+(intLabel?intLabel.label:ep.intensity)+'</td>';
+        html += '<td class="wrap">'+escapeHtml(activityTxt)+'</td>';
+        html += '<td>'+valsalvaTxt+'</td>';
+        html += '<td class="wrap">'+medTxt+'</td>';
+        html += '<td class="wrap">'+escapeHtml(ep.obs||'—')+'</td>';
         html += '</tr>';
       });
       html += '</tbody></table></div>';
-
-      html += '<div class="section-title">Observações registradas</div>';
-      var obsKeys = keys.filter(function(k){ return DATA.entries[k].obs && DATA.entries[k].obs.trim(); }).reverse();
-      if(obsKeys.length===0){
-        html += '<div class="empty" style="padding:16px 10px;">Nenhuma observação escrita ainda.</div>';
-      } else {
-        html += '<div class="card">';
-        obsKeys.forEach(function(k){
-          var e = DATA.entries[k];
-          html += '<div class="obs-item"><span class="o-date">'+shortDateLabel(k)+'</span>';
-          if(e.valsalva===true) html += '<span class="o-flag">piora c/ esforço</span>';
-          html += '<div>'+escapeHtml(e.obs)+'</div></div>';
-        });
-        html += '</div>';
-      }
 
       html += '<button class="btn block no-print" id="print-btn" style="margin-top:16px;">🖨️ Imprimir / salvar em PDF</button>';
       html += '<p class="hint no-print" style="text-align:center;">Leve este resumo para a consulta médica.</p>';
     }
 
     el.innerHTML = html;
-
     var nameInput = document.getElementById('patient-name');
     if(nameInput){
       nameInput.addEventListener('input', function(){
@@ -480,6 +619,10 @@
     if(printBtn){ printBtn.addEventListener('click', function(){ window.print(); }); }
   }
 
+  function renderAll(){
+    renderHoje(); renderHistorico(); renderResumo();
+  }
+
   // ---------- Nav ----------
   var VIEWS = ['hoje','historico','resumo'];
   function switchView(name){
@@ -489,8 +632,6 @@
     document.querySelectorAll('nav.bottomnav button').forEach(function(btn){
       btn.classList.toggle('active', btn.getAttribute('data-view')===name);
     });
-    if(name==='historico') renderHistorico();
-    if(name==='resumo') renderResumo();
   }
   document.querySelectorAll('nav.bottomnav button').forEach(function(btn){
     btn.addEventListener('click', function(){ switchView(btn.getAttribute('data-view')); });
@@ -499,8 +640,8 @@
   document.getElementById('modal-backdrop').addEventListener('click', closeModal);
 
   // ---------- Init ----------
-  document.getElementById('header-date').textContent = longDateLabel(todayKey());
-  renderHoje();
+  document.getElementById('header-date').textContent = longDateLabel(nowDateStr());
+  renderAll();
 })();
 </script>
 </body>
